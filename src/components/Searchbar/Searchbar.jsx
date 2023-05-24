@@ -1,38 +1,25 @@
-import { Component } from "react";
+import PropTypes from "prop-types";
 import scss from "./Searchbar.module.scss";
 
-class Searchbar extends Component {
-  state = {
-    searcher: "",
-  };
+const Searchbar = ({ handleSubmit }) => (
+  <header className={scss.searchForm__box}>
+    <form className={scss.searchForm} onSubmit={handleSubmit}>
+      <input
+        className={scss.searchForm__searcher}
+        type="text"
+        name="searcher"
+        autoComplete="off"
+        autoFocus
+        placeholder="Search images..."
+        required
+      />
+      <button className={scss.searchForm__btn} type="submit"></button>
+    </form>
+  </header>
+);
 
-  handleChange = e => {
-    const { name, value } = e.currentTarget;
-    this.setState(() => ({ [name]: value }));
-  };
-
-  render() {
-    const { searcher } = this.state;
-
-    return (
-      <header className={scss.searchForm__box}>
-        <form className={scss.searchForm}>
-          <input
-            className={scss.searchForm__searcher}
-            type="text"
-            name="searcher"
-            value={searcher}
-            onChange={this.handleChange}
-            autoComplete="off"
-            autoFocus
-            placeholder="Search images..."
-            required
-          />
-          <button className={scss.searchForm__btn} type="submit"></button>
-        </form>
-      </header>
-    );
-  }
-}
+Searchbar.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+};
 
 export default Searchbar;

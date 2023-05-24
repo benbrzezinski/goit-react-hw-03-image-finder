@@ -2,8 +2,23 @@ import { Component } from "react";
 import Searchbar from "./Searchbar/Searchbar";
 
 class App extends Component {
+  state = {
+    searcher: "",
+    images: [],
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const { searcher } = form.elements;
+
+    this.setState(() => ({ searcher: searcher.value }));
+    setTimeout(() => form.reset(), 0);
+  };
+
   render() {
-    return <Searchbar />;
+    return <Searchbar handleSubmit={this.handleSubmit} />;
   }
 }
 

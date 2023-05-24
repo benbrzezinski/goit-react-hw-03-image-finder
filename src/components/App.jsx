@@ -13,7 +13,7 @@ class App extends Component {
     const form = e.currentTarget;
     const { searcher } = form.elements;
 
-    this.setState(() => ({ searcher: searcher.value }));
+    this.setState(() => ({ searcher: searcher.value.toLowerCase().trim() }));
     setTimeout(() => form.reset(), 0);
   };
 

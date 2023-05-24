@@ -1,9 +1,9 @@
 {
-  "name": "vite-template-react-swc",
+  "name": "goit-react-hw-03-image-finder",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://benbrzezinski.github.io/vite-template-react-swc/",
+  "homepage": "https://benbrzezinski.github.io/goit-react-hw-03-image-finder/",
   "scripts": {
     "dev": "vite",
     "predeploy": "npm run build",

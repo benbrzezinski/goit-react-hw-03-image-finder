@@ -1,5 +1,10 @@
-const App = () => (
-  <div style={{ fontSize: 50, textAlign: "center" }}>Vite + React</div>
-);
+import { Component } from "react";
+import Searchbar from "./Searchbar/Searchbar";
+
+class App extends Component {
+  render() {
+    return <Searchbar />;
+  }
+}
 
 export default App;

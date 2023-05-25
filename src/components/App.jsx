@@ -1,13 +1,27 @@
 import { Component } from "react";
+import Api from "../utils/js/api";
 import Searchbar from "./Searchbar/Searchbar";
+import ImageGallery from "./ImageGallery/ImageGallery";
+import ImageGalleryItem from "./ImageGallery/ImageGalleryItem";
 
 class App extends Component {
   state = {
     searcher: "",
-    images: [],
+    page: 1,
+    photos: [],
   };
 
-  handleSubmit = e => {
+  async componentDidUpdate(_, prevState) {
+    const { searcher, page } = this.state;
+    const { hits: photos, totalHits: totalPhotos } =
+      await Api.fetchPhotosByQuery(searcher, page);
+
+    if (prevState.searcher !== searcher) {
+      this.setState(() => ({ photos }));
+    }
+  }
+
+  handleSubmit = async e => {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -18,7 +32,16 @@ class App extends Component {
   };
 
   render() {
-    return <Searchbar handleSubmit={this.handleSubmit} />;
+    const { photos } = this.state;
+
+    return (
+      <>
+        <Searchbar handleSubmit={this.handleSubmit} />
+        <ImageGallery>
+          <ImageGalleryItem photos={photos} />
+        </ImageGallery>
+      </>
+    );
   }
 }
 

@@ -13,8 +13,10 @@ class App extends Component {
 
   async componentDidUpdate(_, prevState) {
     const { searcher, page } = this.state;
-    const { hits: photos, totalHits: totalPhotos } =
-      await Api.fetchPhotosByQuery(searcher, page);
+    const { hits: photos, totalHits: _ } = await Api.fetchPhotosByQuery(
+      searcher,
+      page
+    );
 
     if (prevState.searcher !== searcher) {
       this.setState(() => ({ photos }));

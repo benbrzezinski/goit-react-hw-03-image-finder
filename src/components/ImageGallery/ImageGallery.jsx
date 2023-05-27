@@ -2,7 +2,9 @@ import PropTypes from "prop-types";
 import scss from "./ImageGallery.module.scss";
 
 const ImageGallery = ({ children }) => (
-  <ul className={scss.gallery}>{children}</ul>
+  <main>
+    <ul className={scss.gallery}>{children}</ul>
+  </main>
 );
 
 ImageGallery.propTypes = {

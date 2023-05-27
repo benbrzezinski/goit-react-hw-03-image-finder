@@ -1,44 +1,76 @@
 import { Component } from "react";
-import Api from "../utils/js/api";
 import Searchbar from "./Searchbar/Searchbar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ImageGalleryItem from "./ImageGallery/ImageGalleryItem";
+import Button from "./Button/Button";
+import Api from "../utils/services/api";
 
 class App extends Component {
+  PER_PAGE = 12;
+
   state = {
     searcher: "",
     page: 1,
-    photos: [],
+    images: [],
+    status: null,
+    areThereMorePhotos: null,
   };
 
-  async componentDidUpdate(_, prevState) {
-    const { searcher, page } = this.state;
-    const { hits: photos } = await Api.fetchPhotosByQuery(searcher, page);
+  async componentDidUpdate() {
+    const { searcher, page, status } = this.state;
 
-    if (prevState.searcher !== searcher) {
-      this.setState(() => ({ photos }));
+    if (status) {
+      try {
+        const { hits: photos, totalHits: totalPhotos } =
+          await Api.fetchPhotosByQuery(searcher, page, this.PER_PAGE);
+
+        const areThereMorePhotos =
+          Math.ceil(totalPhotos / this.PER_PAGE) > page;
+        this.setState({ status: false, areThereMorePhotos });
+
+        if (page === 1) {
+          this.setState({ images: photos });
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        if (page > 1) {
+          this.setState(({ images }) => ({
+            images: [...images, ...photos],
+          }));
+        }
+      } catch (err) {
+        console.error(err.stack);
+      }
     }
   }
 
-  handleSubmit = async e => {
+  handleSubmit = e => {
     e.preventDefault();
 
     const form = e.currentTarget;
-    const { searcher } = form.elements;
+    const searcher = form.elements.searcher.value;
 
-    this.setState(() => ({ searcher: searcher.value.toLowerCase().trim() }));
-    setTimeout(() => form.reset(), 0);
+    this.setState({
+      searcher: searcher.toLowerCase().trim(),
+      page: 1,
+      status: true,
+    });
+  };
+
+  getNextPage = () => {
+    this.setState(({ page }) => ({ page: page + 1, status: true }));
   };
 
   render() {
-    const { photos } = this.state;
+    const { images, areThereMorePhotos } = this.state;
 
     return (
       <>
         <Searchbar handleSubmit={this.handleSubmit} />
         <ImageGallery>
-          <ImageGalleryItem photos={photos} />
+          <ImageGalleryItem images={images} />
         </ImageGallery>
+        {areThereMorePhotos && <Button getNextPage={this.getNextPage} />}
       </>
     );
   }

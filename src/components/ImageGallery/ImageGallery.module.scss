@@ -4,7 +4,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  padding: 80px 15px 100px;
+  padding: 80px 15px 50px;
 
   @include max-width(1599px) {
     grid-template-columns: repeat(3, 1fr);
@@ -27,5 +27,16 @@
   width: 100%;
   object-fit: cover;
   aspect-ratio: 3 / 2;
-  border-radius: var(--main-border-radius) var(--main-border-radius) 0 0;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: transform var(--transition-duration) var(--timing-function);
+
+  &:hover,
+  &:focus-visible {
+    transform: scale(1.03);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
 }

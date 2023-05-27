@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import scss from "./ImageGallery.module.scss";
 
-const ImageGalleryItem = ({ photos }) =>
-  photos.map(({ id, webformatURL, tags }) => (
+const ImageGalleryItem = ({ images }) =>
+  images.map(({ id, webformatURL, tags }) => (
     <li className={scss.gallery__card} key={id}>
       <img
         className={scss.gallery__img}
@@ -14,7 +14,7 @@ const ImageGalleryItem = ({ photos }) =>
   ));
 
 ImageGalleryItem.propTypes = {
-  photos: PropTypes.arrayOf(
+  images: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       webformatURL: PropTypes.string.isRequired,

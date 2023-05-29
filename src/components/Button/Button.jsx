@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import scss from "./Button.module.scss";
 
 const Button = ({ getNextPage }) => (
-  <footer className={scss.btn__box}>
+  <footer className={scss.btnBox}>
     <button className={scss.btn} type="submit" onClick={getNextPage}>
       Load more
     </button>

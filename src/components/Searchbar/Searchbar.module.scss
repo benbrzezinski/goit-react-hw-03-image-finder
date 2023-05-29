@@ -1,11 +1,6 @@
 @use "src/utils/scss/mixins.scss" as *;
 
-.searchForm {
-  display: flex;
-  position: relative;
-}
-
-.searchForm__box {
+.searchFormBox {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,6 +10,11 @@
   box-shadow: 0px 10px 20px -10px var(--color-bg-third);
   position: fixed;
   z-index: 100;
+}
+
+.searchForm {
+  display: flex;
+  position: relative;
 }
 
 .searchForm__searcher {
@@ -46,10 +46,10 @@
 
   &:hover,
   &:focus-visible {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0 0 0 / 0.2);
   }
 
   &:active {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0 0 0 / 0.4);
   }
 }

@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import scss from "./Searchbar.module.scss";
 
 const Searchbar = ({ handleSubmit }) => (
-  <header className={scss.searchForm__box}>
+  <header className={scss.searchFormBox}>
     <form className={scss.searchForm} onSubmit={handleSubmit}>
       <input
         className={scss.searchForm__searcher}

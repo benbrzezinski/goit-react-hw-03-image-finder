@@ -1,4 +1,7 @@
 import { Component } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Triangle } from "react-loader-spinner";
 import Searchbar from "./Searchbar/Searchbar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ImageGalleryItem from "./ImageGallery/ImageGalleryItem";
@@ -17,9 +20,10 @@ class App extends Component {
     tags: "",
     page: 1,
     images: [],
-    status: null,
-    areThereMorePhotos: null,
+    status: false,
+    areThereMorePhotos: false,
     isModalOpen: false,
+    isLoading: false,
   };
 
   async componentDidUpdate() {
@@ -27,12 +31,23 @@ class App extends Component {
 
     if (status) {
       try {
+        this.setState({ status: false, isLoading: true });
+
         const { hits: photos, totalHits: totalPhotos } =
           await Api.fetchPhotosByQuery(searchQuery, page, this.PER_PAGE);
 
+        if (!totalPhotos) {
+          this.setState({
+            images: [],
+            areThereMorePhotos: false,
+          });
+
+          return toast.error("No photos found 🔍");
+        }
+
         const areThereMorePhotos =
           Math.ceil(totalPhotos / this.PER_PAGE) > page;
-        this.setState({ status: false, areThereMorePhotos });
+        this.setState({ areThereMorePhotos });
 
         if (page === 1) {
           this.setState({ images: photos });
@@ -45,12 +60,14 @@ class App extends Component {
           }));
 
           setTimeout(
-            () => window.scrollBy({ top: 400, behavior: "smooth" }),
+            () => window.scrollBy({ top: 500, behavior: "smooth" }),
             0
           );
         }
       } catch (err) {
         console.error(err.stack);
+      } finally {
+        this.setState({ isLoading: false });
       }
     }
   }
@@ -95,8 +112,14 @@ class App extends Component {
   };
 
   render() {
-    const { largeImageURL, tags, images, areThereMorePhotos, isModalOpen } =
-      this.state;
+    const {
+      largeImageURL,
+      tags,
+      images,
+      areThereMorePhotos,
+      isModalOpen,
+      isLoading,
+    } = this.state;
 
     return (
       <>
@@ -112,6 +135,22 @@ class App extends Component {
           closeModalOnClick={this.closeModalOnClick}
           closeModalOnEsc={this.closeModalOnEsc}
         />
+        <Triangle
+          height="100"
+          width="100"
+          color="#3a3ab7"
+          ariaLabel="triangle-loading"
+          wrapperStyle={{
+            position: "fixed",
+            top: "40%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 300,
+          }}
+          wrapperClass="Triangle"
+          visible={isLoading}
+        />
+        <ToastContainer autoClose={3000} theme="colored" />
       </>
     );
   }

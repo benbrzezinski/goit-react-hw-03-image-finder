@@ -1,15 +1,14 @@
 import { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Triangle } from "react-loader-spinner";
+import { MagnifyingGlass } from "react-loader-spinner";
+import { enableBodyScroll, disableBodyScroll } from "body-scroll-lock";
 import Searchbar from "./Searchbar/Searchbar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ImageGalleryItem from "./ImageGallery/ImageGalleryItem";
 import Button from "./Button/Button";
 import Modal from "./Modal/Modal";
 import Api from "../utils/services/api";
-
-const body = document.querySelector("body");
 
 class App extends Component {
   PER_PAGE = 12;
@@ -93,20 +92,20 @@ class App extends Component {
     const largeImageURL = e.currentTarget.dataset.src;
     const tags = e.currentTarget.getAttribute("alt");
 
-    body.style.overflow = "hidden";
+    disableBodyScroll(document.body);
     this.setState({ largeImageURL, tags, isModalOpen: true });
   };
 
   closeModalOnClick = e => {
     if (e.currentTarget === e.target) {
-      body.style.overflow = "unset";
+      enableBodyScroll(document.body);
       this.setState({ largeImageURL: "", tags: "", isModalOpen: false });
     }
   };
 
   closeModalOnEsc = e => {
     if (e.code === "Escape") {
-      body.style.overflow = "unset";
+      enableBodyScroll(document.body);
       this.setState({ largeImageURL: "", tags: "", isModalOpen: false });
     }
   };
@@ -135,11 +134,11 @@ class App extends Component {
           closeModalOnClick={this.closeModalOnClick}
           closeModalOnEsc={this.closeModalOnEsc}
         />
-        <Triangle
-          height="100"
-          width="100"
-          color="#3a3ab7"
-          ariaLabel="triangle-loading"
+        <MagnifyingGlass
+          visible={isLoading}
+          width="160"
+          height="160"
+          ariaLabel="MagnifyingGlass-loading"
           wrapperStyle={{
             position: "fixed",
             top: "40%",
@@ -147,8 +146,9 @@ class App extends Component {
             transform: "translate(-50%, -50%)",
             zIndex: 300,
           }}
-          wrapperClass="Triangle"
-          visible={isLoading}
+          wrapperClass="MagnifyingGlass-wrapper"
+          glassColor="#c0efff"
+          color="#3a3ab7"
         />
         <ToastContainer autoClose={3000} theme="colored" />
       </>

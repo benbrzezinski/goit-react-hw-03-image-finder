@@ -1,13 +1,13 @@
 import { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { MagnifyingGlass } from "react-loader-spinner";
 import { enableBodyScroll, disableBodyScroll } from "body-scroll-lock";
 import Searchbar from "./Searchbar/Searchbar";
 import ImageGallery from "./ImageGallery/ImageGallery";
 import ImageGalleryItem from "./ImageGallery/ImageGalleryItem";
 import Button from "./Button/Button";
 import Modal from "./Modal/Modal";
+import Loader from "./Loader/Loader";
 import Api from "../utils/services/api";
 
 class App extends Component {
@@ -134,22 +134,7 @@ class App extends Component {
           closeModalOnClick={this.closeModalOnClick}
           closeModalOnEsc={this.closeModalOnEsc}
         />
-        <MagnifyingGlass
-          visible={isLoading}
-          width="160"
-          height="160"
-          ariaLabel="MagnifyingGlass-loading"
-          wrapperStyle={{
-            position: "fixed",
-            top: "40%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 300,
-          }}
-          wrapperClass="MagnifyingGlass-wrapper"
-          glassColor="#c0efff"
-          color="#3a3ab7"
-        />
+        <Loader isLoading={isLoading} />
         <ToastContainer autoClose={3000} theme="colored" />
       </>
     );
